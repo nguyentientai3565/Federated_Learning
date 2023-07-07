@@ -11,7 +11,7 @@ from torchvision.datasets import CIFAR10
 from tqdm import tqdm
 import time
 from GoogleNet import GoogLeNet
-DATA_ROOT = "./dataset"
+DATA_ROOT = "./flower_cifar/dataset"
 
 # Hyper-parameters 
 n_epochs = 3
@@ -49,6 +49,8 @@ def load_data() -> (
 
     # Split each partition into train/val and create DataLoader
     trainloaders = []
+    '''
+    trainloaders = []
     valloaders = []
     for ds in datasets:
         len_val = len(ds) // 10  # 10 % validation set
@@ -57,10 +59,14 @@ def load_data() -> (
         ds_train, ds_val = random_split(ds, lengths, torch.Generator().manual_seed(42))
         trainloaders.append(DataLoader(ds_train, batch_size=batch_size, shuffle=True))
         valloaders.append(DataLoader(ds_val, batch_size=batch_size))
-    testloader = DataLoader(testset, batch_size=batch_size)
+        '''
+    for ds in datasets:
+        trainloaders.append(DataLoader(ds, batch_size=batch_size, shuffle=True)) 
+    testloader = DataLoader(testset, batch_size=batch_size, shuffle=False)
+    
     num_examples = {"trainset": partition_size, "testset": len(testset)}
-    return trainloaders, valloaders, testloader, num_examples
-    #return trainloader, testloader, num_examples
+    #return trainloaders, valloaders, testloader, num_examples
+    return trainloaders, testloader, num_examples
 
 
 def train(
@@ -123,7 +129,7 @@ def main():
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     print("Centralized PyTorch training")
     print("Load data")
-    trainloader, _ ,testloader, _ = load_data()
+    trainloader, testloader, _ = load_data()
     model = GoogLeNet().to(device)
 
     print("Start training")

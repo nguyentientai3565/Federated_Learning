@@ -7,12 +7,12 @@ import numpy as np
 from GoogleNet import GoogLeNet
 from cifar import load_data
 
-_ ,_ , test_loader, _ = load_data()
+_ , test_loader, _ = load_data()
 
 #device = 'cuda' if torch.cuda.is_available() else 'cpu'
 # Đường dẫn đến file chứa model_state_dict đã lưu
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model_path = ".\model_round_3.pth"
+model_path = "./flower_cifar/model_round_3.pth"
 model = GoogLeNet().to(device)
 # Nạp model_state_dict vào mô hình mới
 model.load_state_dict(torch.load(model_path))

@@ -65,7 +65,7 @@ def main() -> None:
     """Load data, start CifarClient."""
 
     # Load data
-    trainloader,_ ,testloader, num_examples = cifar.load_data()
+    trainloader, testloader, num_examples = cifar.load_data()
 
     # Load model
     model = GoogLeNet().to(DEVICE).train()
