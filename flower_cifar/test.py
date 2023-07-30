@@ -5,6 +5,7 @@ import torchvision
 from tqdm import tqdm
 import numpy as np
 from GoogleNet import GoogLeNet
+from vgg16 import VGG16
 from cifar import load_data
 
 _ , test_loader, _ = load_data()
@@ -12,8 +13,8 @@ _ , test_loader, _ = load_data()
 #device = 'cuda' if torch.cuda.is_available() else 'cpu'
 # Đường dẫn đến file chứa model_state_dict đã lưu
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model_path = "./flower_cifar/model_round_3.pth"
-model = GoogLeNet().to(device)
+model_path = ".\VGG16.pth"
+model = VGG16().to(device)
 # Nạp model_state_dict vào mô hình mới
 model.load_state_dict(torch.load(model_path))
 model.eval()
@@ -42,7 +43,7 @@ imshow(torchvision.utils.make_grid(images))
 #y = model(x)
 #print(torch.max(y,1)[1])
 #print(y)
-batch_size = 4
+batch_size = 32
 with torch.no_grad():
     n_correct = 0
     n_samples = 0

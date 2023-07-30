@@ -4,9 +4,10 @@ from typing import Dict, List, Tuple
 import numpy as np
 from GoogleNet import GoogLeNet
 from collections import OrderedDict
+from vgg16 import VGG16
 
 DEVICE: str = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-model = GoogLeNet().to(DEVICE)
+model = VGG16().to(DEVICE)
 class SaveModelStrategy(fl.server.strategy.FedAvg):
     def aggregate_fit(
         self,

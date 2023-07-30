@@ -11,14 +11,15 @@ from torchvision.datasets import CIFAR10
 from tqdm import tqdm
 import time
 from GoogleNet import GoogLeNet
-DATA_ROOT = "./flower_cifar/dataset"
+from vgg16 import VGG16
+DATA_ROOT = "./dataset"
 
 # Hyper-parameters 
-n_epochs = 3
+n_epochs = 5
 batch_size = 4
-learning_rate = 0.00001
+learning_rate = 0.0001
 momentum = 0.9
-NUM_CLIENTS = 2
+NUM_CLIENTS = 1
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 def load_data() -> (
@@ -70,7 +71,7 @@ def load_data() -> (
 
 
 def train(
-    model: GoogLeNet,
+    model: VGG16,
     trainloader: torch.utils.data.DataLoader,
     n_epochs: int
 ) -> None:
@@ -103,7 +104,7 @@ def train(
         print(f"Epoch {epoch} training time: {time_stop - time_start} seconds\n")
             
 def test(
-    model: GoogLeNet,
+    model: VGG16,
     testloader: torch.utils.data.DataLoader
 ) -> Tuple[float, float]:
     """Validate the network on the entire test set."""
@@ -130,13 +131,13 @@ def main():
     print("Centralized PyTorch training")
     print("Load data")
     trainloader, testloader, _ = load_data()
-    model = GoogLeNet().to(device)
+    model = VGG16().to(device)
 
     print("Start training")
     train(model= model, trainloader=trainloader[0], n_epochs=n_epochs)
     
     print('Finished Training')
-    PATH = './GoogleNet.pth'
+    PATH = './VGG16.pth'
     torch.save(model.state_dict(), PATH)
 
 

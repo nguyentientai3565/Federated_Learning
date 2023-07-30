@@ -11,6 +11,7 @@ import torch
 import torchvision
 import cifar
 from cifar import GoogLeNet
+from vgg16 import VGG16
 
 DEVICE: str = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 # pylint: enable=no-member
@@ -23,7 +24,7 @@ class CifarClient(fl.client.NumPyClient):
 
     def __init__(
         self,
-        model: GoogLeNet,
+        model: VGG16,
         trainloader: torch.utils.data.DataLoader,
         testloader: torch.utils.data.DataLoader,
         num_examples: Dict
@@ -68,7 +69,7 @@ def main() -> None:
     trainloader, testloader, num_examples = cifar.load_data()
 
     # Load model
-    model = GoogLeNet().to(DEVICE).train()
+    model = VGG16().to(DEVICE).train()
 
     # Start client
     client = CifarClient(model, trainloader[1], testloader, num_examples)

@@ -102,3 +102,7 @@ class GoogLeNet(nn.Module):
         self.load_state_dict(parameters)
 
 
+x = torch.randn((1, 3, 32 , 32))
+model = GoogLeNet()
+out = model(x)
+print(out.shape)
